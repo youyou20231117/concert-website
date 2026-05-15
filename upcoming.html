@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后续场次预告 - 2026年热门歌手演唱会曲目参考</title>
+    <meta name="description" content="2026年热门歌手演唱会后续场次预告，查询即将举办的演唱会信息，包含售票状态、购票链接、参考曲目等。">
+    <meta name="keywords" content="2026演唱会预告,演唱会购票,演唱会场次,演唱会售票,周华健演唱会,陈奕迅演唱会">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="后续场次预告 - 2026年热门歌手演唱会曲目参考">
+    <meta property="og:description" content="查询2026年即将举办的热门歌手演唱会场次，获取售票状态和参考曲目信息。">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ===== 后续场次页面专属样式 ===== */
+
+        .page-header {
+            background: linear-gradient(135deg, #1a1a5e 0%, #2d1b69 50%, #4a1a8a 100%);
+            color: #ffffff;
+            padding: 32px 0 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(100, 80, 200, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(60, 40, 160, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header .breadcrumb {
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .active {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 筛选栏 */
+        .filter-bar {
+            background-color: var(--color-white);
+            padding: 16px 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: var(--nav-height);
+            z-index: 100;
+        }
+
+        .filter-bar .container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        .filter-bar select {
+            padding: 8px 32px 8px 12px;
+            font-size: 14px;
+            color: var(--color-text-primary);
+            background-color: var(--color-light-gray);
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            min-width: 120px;
+            transition: border-color var(--transition-fast);
+        }
+
+        .filter-bar select:focus {
+            border-color: var(--color-primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+        }
+
+        .filter-bar .btn-reset {
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            background-color: transparent;
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .filter-bar .btn-reset:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            background-color: var(--color-primary-bg);
+        }
+
+        .filter-result-count {
+            margin-left: auto;
+            font-size: 13px;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        /* 场次列表区 */
+        .upcoming-section {
+            padding: 24px 0 48px;
+        }
+
+        .show-list-upcoming {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .upcoming-card {
+            display: flex;
+            align-items: stretch;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+        }
+
+        .upcoming-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .upcoming-card-date {
+            flex-shrink: 0;
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #1E40AF 0%, #1D3A9A 100%);
+            color: #ffffff;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .upcoming-card-date .date-day {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .upcoming-card-date .date-month {
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .upcoming-card-body {
+            flex: 1;
+            padding: 14px 16px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .upcoming-card-body h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .upcoming-card-body .show-location {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0;
+        }
+
+        .upcoming-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .upcoming-card-hint {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        .upcoming-card-ref {
+            font-size: 12px;
+            color: var(--color-primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .upcoming-card-ref:hover {
+            text-decoration: underline;
+            color: var(--color-primary-hover);
+        }
+
+        /* 售票状态标签 */
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            white-space: nowrap;
+        }
+
+        .status-available {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-soldout {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status-upcoming {
+            background-color: #F3F4F6;
+            color: #6B7280;
+        }
+
+        .btn-buy {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #F97316;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn-buy:hover {
+            background-color: #EA6A10;
+            color: #ffffff;
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+        }
+
+        /* 广告间距 */
+        .ad-slot-wrapper {
+            padding: 8px 0;
+        }
+
+        /* ===== 手机端适配 ===== */
+        @media screen and (max-width: 767px) {
+            .page-header {
+                padding: 20px 0 16px;
+            }
+
+            .page-header h1 {
+                font-size: 20px;
+            }
+
+            .filter-bar {
+                position: static;
+                padding: 12px 0;
+            }
+
+            .filter-bar .container {
+                gap: 8px;
+            }
+
+            .filter-bar select {
+                flex: 1;
+                min-width: 0;
+                font-size: 13px;
+                padding: 7px 28px 7px 10px;
+            }
+
+            .filter-bar label {
+                width: 100%;
+            }
+
+            .filter-result-count {
+                width: 100%;
+                margin-left: 0;
+                text-align: center;
+            }
+
+            .upcoming-card {
+                flex-direction: column;
+            }
+
+            .upcoming-card-date {
+                width: 100%;
+                flex-direction: row;
+                gap: 8px;
+                padding: 8px 14px;
+            }
+
+            .upcoming-card-date .date-day {
+                font-size: 22px;
+            }
+
+            .upcoming-card-body {
+                padding: 10px 14px;
+            }
+
+            .upcoming-card-body h3 {
+                font-size: 14px;
+            }
+
+            .upcoming-section {
+                padding: 16px 0 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <nav id="mobile-nav"></nav>
+
+    <main>
+        <!-- 页面头部 -->
+        <section class="page-header">
+            <div class="container">
+                <div id="breadcrumb"></div>
+                <h1>🎫 后续场次预告</h1>
+            </div>
+        </section>
+
+        <!-- 顶部广告 -->
+        <div class="container" id="ad-top-banner"></div>
+
+        <!-- 筛选栏 -->
+        <div class="filter-bar">
+            <div class="container">
+                <label for="filter-singer">歌手：</label>
+                <select id="filter-singer">
+                    <option value="">全部歌手</option>
+                </select>
+                <label for="filter-city">城市：</label>
+                <select id="filter-city">
+                    <option value="">全部城市</option>
+                </select>
+                <label for="filter-month">月份：</label>
+                <select id="filter-month">
+                    <option value="">全部月份</option>
+                    <option value="1">1月</option>
+                    <option value="2">2月</option>
+                    <option value="3">3月</option>
+                    <option value="4">4月</option>
+                    <option value="5">5月</option>
+                    <option value="6">6月</option>
+                    <option value="7">7月</option>
+                    <option value="8">8月</option>
+                    <option value="9">9月</option>
+                    <option value="10">10月</option>
+                    <option value="11">11月</option>
+                    <option value="12">12月</option>
+                </select>
+                <button class="btn-reset" id="btn-reset">重置筛选</button>
+                <span class="filter-result-count" id="result-count"></span>
+            </div>
+        </div>
+
+        <!-- 场次列表 -->
+        <section class="upcoming-section">
+            <div class="container">
+                <div class="show-list-upcoming" id="upcoming-list">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部广告 -->
+        <div class="container" id="ad-bottom-banner"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <!-- 手机端底部粘性广告 -->
+    <div id="ad-mobile-sticky"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // ======================== 初始化 ========================
+        initApp();
+
+        // ======================== 渲染面包屑 ========================
+        document.getElementById('breadcrumb').innerHTML = renderBreadcrumb([
+            { label: '首页', url: 'index.html' },
+            { label: '后续场次' }
+        ]);
+
+        // ======================== 渲染广告位 ========================
+        document.getElementById('ad-top-banner').innerHTML = renderAd('banner', 'upcoming-top');
+        document.getElementById('ad-bottom-banner').innerHTML = renderAd('banner', 'upcoming-bottom');
+        document.getElementById('ad-mobile-sticky').innerHTML = renderAd('mobile-sticky', 'upcoming-mobile');
+
+        // ======================== 填充筛选选项 ========================
+        const filterSinger = document.getElementById('filter-singer');
+        const filterCity = document.getElementById('filter-city');
+        const filterMonth = document.getElementById('filter-month');
+        const btnReset = document.getElementById('btn-reset');
+        const resultList = document.getElementById('upcoming-list');
+        const resultCount = document.getElementById('result-count');
+
+        // 获取所有未举办的场次
+        let upcomingShows = shows
+            .filter(s => !s.isPast)
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // 填充歌手下拉
+        const singerSet = new Set();
+        upcomingShows.forEach(show => {
+            const tour = getTourById(show.tourId);
+            if (tour) singerSet.add(tour.singerId);
+        });
+        singerSet.forEach(singerId => {
+            const singer = getSingerById(singerId);
+            if (singer) {
+                const opt = document.createElement('option');
+                opt.value = singerId;
+                opt.textContent = singer.name;
+                filterSinger.appendChild(opt);
+            }
+        });
+
+        // 填充城市下拉
+        const citySet = new Set();
+        upcomingShows.forEach(show => citySet.add(show.city));
+        [...citySet].sort().forEach(city => {
+            const opt = document.createElement('option');
+            opt.value = city;
+            opt.textContent = city;
+            filterCity.appendChild(opt);
+        });
+
+        // 从URL参数读取预选值
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('singer')) filterSinger.value = urlParams.get('singer');
+        if (urlParams.get('city')) filterCity.value = urlParams.get('city');
+        if (urlParams.get('month')) filterMonth.value = urlParams.get('month');
+
+        // ======================== 查找同巡演已举办场次 ========================
+        function findPastShowInSameTour(tourId) {
+            const pastShows = shows.filter(s => s.tourId === tourId && s.isPast);
+            if (pastShows.length === 0) return null;
+            // 返回最近一场已举办的场次
+            return pastShows.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        }
+
+        // ======================== 渲染场次列表 ========================
+        function renderUpcomingList() {
+            const singerFilter = filterSinger.value;
+            const cityFilter = filterCity.value;
+            const monthFilter = filterMonth.value;
+
+            // 筛选
+            let filtered = upcomingShows.filter(show => {
+                const tour = getTourById(show.tourId);
+                if (!tour) return false;
+
+                if (singerFilter && tour.singerId !== singerFilter) return false;
+                if (cityFilter && show.city !== cityFilter) return false;
+                if (monthFilter) {
+                    const showMonth = parseInt(show.date.split('-')[1], 10);
+                    if (showMonth !== parseInt(monthFilter, 10)) return false;
+                }
+                return true;
+            });
+
+            // 更新结果计数
+            resultCount.textContent = `共 ${filtered.length} 场`;
+
+            if (filtered.length === 0) {
+                resultList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎵</div>
+                        <h3>暂无符合条件的场次</h3>
+                        <p>请尝试调整筛选条件，或稍后再来查看</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((show, index) => {
+                const tour = getTourById(show.tourId);
+                const singer = getSingerById(tour.singerId);
+
+                // 售票状态样式
+                let statusClass = 'status-upcoming';
+                if (show.ticketStatus === '可购票') statusClass = 'status-available';
+                else if (show.ticketStatus === '已售罄') statusClass = 'status-soldout';
+
+                // 购票按钮
+                const buyBtn = show.ticketStatus === '可购票'
+                    ? `<a href="${show.ticketUrl}" class="btn-buy" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">立即购票</a>`
+                    : '';
+
+                // 查找同巡演已举办场次作为参考
+                const refShow = findPastShowInSameTour(show.tourId);
+                let refLink = '';
+                if (refShow) {
+                    refLink = `<a href="setlist.html?id=${refShow.id}" class="upcoming-card-ref">查看参考曲目</a>`;
+                }
+
+                // 每5个场次插入一个内嵌广告
+                if (index > 0 && index % 5 === 0) {
+                    html += `<div class="ad-slot-wrapper">${renderAd('inline', `upcoming-inline-${index}`)}</div>`;
+                }
+
+                html += `
+                    <div class="upcoming-card">
+                        <div class="upcoming-card-date">
+                            <span class="date-day">${show.date.split('-')[2]}</span>
+                            <span class="date-month">${show.date.split('-')[1]}月</span>
+                        </div>
+                        <div class="upcoming-card-body">
+                            <h3>${singer.name} - ${tour.name}</h3>
+                            <p class="show-location">📍 ${show.city} · ${show.venue}</p>
+                            <div class="upcoming-card-actions">
+                                <span class="status-tag ${statusClass}">${show.ticketStatus}</span>
+                                ${buyBtn}
+                                ${refLink}
+                            </div>
+                            <p class="upcoming-card-hint">预计曲目可参考同巡演前序场次</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultList.innerHTML = html;
+        }
+
+        // ======================== 事件绑定 ========================
+        filterSinger.addEventListener('change', renderUpcomingList);
+        filterCity.addEventListener('change', renderUpcomingList);
+        filterMonth.addEventListener('change', renderUpcomingList);
+
+        btnReset.addEventListener('click', () => {
+            filterSinger.value = '';
+            filterCity.value = '';
+            filterMonth.value = '';
+            renderUpcomingList();
+        });
+
+        // ======================== 初始渲染 ========================
+        renderUpcomingList();
+    </script>
+</body>
+</html>
