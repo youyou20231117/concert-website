@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歌手列表 - 2026年热门歌手演唱会曲目参考</title>
+    <meta name="description" content="2026年热门歌手演唱会曲目参考 - 完整歌手列表，包括周华健、陈奕迅、林俊杰、邓紫棋等12位热门歌手的巡演信息与代表曲目。">
+    <meta name="keywords" content="歌手列表,2026演唱会,周华健,陈奕迅,林俊杰,邓紫棋,五月天,演唱会曲目">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ===== 歌手列表页专属样式 ===== */
+
+        /* 页面顶部搜索区 */
+        .page-search {
+            background: linear-gradient(135deg, #1a1a5e 0%, #2d1b69 50%, #4a1a8a 100%);
+            color: #ffffff;
+            padding: 40px 0 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-search::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(100, 80, 200, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(60, 40, 160, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-search .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-search h1 {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-search > .container > p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .page-search .search-box input {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            height: 50px;
+            font-size: 15px;
+        }
+
+        .page-search .search-box input:focus {
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+        }
+
+        /* 风格筛选标签栏 */
+        .style-filter-bar {
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-medium-gray);
+            position: sticky;
+            top: var(--nav-height);
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .style-filter-bar .container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding-top: 12px;
+            padding-bottom: 12px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .style-filter-bar .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .style-filter-label {
+            font-size: var(--font-size-body-sm);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .style-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            font-size: var(--font-size-caption);
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background-color: var(--color-light-gray);
+            border: 1px solid transparent;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .style-chip:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .style-chip.active {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        /* 歌手网格 */
+        .singer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .singer-card {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .singer-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .singer-card-img {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background-color: var(--color-light-gray);
+        }
+
+        .singer-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+
+        .singer-card:hover .singer-card-img img {
+            transform: scale(1.05);
+        }
+
+        .singer-card-img .tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .singer-card-info {
+            padding: 14px;
+        }
+
+        .singer-card-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .singer-tour-name {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .singer-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .singer-meta .tag-style {
+            background-color: #EDE9FE;
+            color: #6D28D9;
+        }
+
+        .singer-count {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .singer-hit-songs {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .singer-hit-songs span {
+            display: inline-block;
+            padding: 1px 8px;
+            background-color: var(--color-light-gray);
+            border-radius: 10px;
+            margin: 2px 3px 2px 0;
+            font-size: 11px;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* 广告容器间距 */
+        #ad-top-banner,
+        #ad-mid-banner {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        /* ===== 手机端适配 ===== */
+        @media screen and (max-width: 767px) {
+            .page-search {
+                padding: 32px 0 24px;
+            }
+
+            .page-search h1 {
+                font-size: 20px;
+            }
+
+            .page-search > .container > p {
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+
+            .page-search .search-box input {
+                height: 44px;
+                font-size: 14px;
+            }
+
+            .style-filter-bar {
+                top: 0;
+            }
+
+            .singer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .singer-card-info {
+                padding: 10px;
+            }
+
+            .singer-card-info h3 {
+                font-size: 14px;
+            }
+
+            .singer-tour-name {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .singer-hit-songs span {
+                font-size: 10px;
+                padding: 1px 6px;
+            }
+        }
+
+        /* ===== 平板适配 ===== */
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .singer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <nav id="mobile-nav"></nav>
+
+    <main>
+        <!-- 顶部搜索区 -->
+        <section class="page-search">
+            <div class="container">
+                <h1>歌手列表</h1>
+                <p>共12位热门歌手，查看巡演信息与代表曲目</p>
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" placeholder="搜索歌手名称、风格、曲目...">
+                    <button id="search-btn" class="search-btn">搜索</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 广告位：顶部横幅 -->
+        <div class="container" id="ad-top-banner"></div>
+
+        <!-- 风格筛选标签栏 -->
+        <div class="style-filter-bar">
+            <div class="container">
+                <span class="style-filter-label">风格：</span>
+                <div id="style-filters">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <section class="section">
+            <div class="container">
+                <div class="main-layout">
+                    <div class="main-content">
+                        <!-- 歌手网格 -->
+                        <div class="singer-grid" id="singer-grid">
+                            <!-- JS动态渲染 -->
+                        </div>
+                    </div>
+                    <!-- 侧边栏广告 -->
+                    <aside class="sidebar" id="sidebar-ads">
+                        <!-- JS动态渲染 -->
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- 广告位：中间横幅 -->
+        <div class="container" id="ad-mid-banner"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <!-- 手机端底部粘性广告 -->
+    <div id="ad-mobile-sticky"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // ==================== 初始化 ====================
+        initApp();
+
+        // ==================== 风格筛选配置 ====================
+        const STYLES = ['全部', '流行', '摇滚', '民谣', '港乐', '说唱', '电子'];
+        let currentStyle = '全部';
+        let currentKeyword = '';
+
+        // ==================== 渲染面包屑 ====================
+        document.getElementById('breadcrumb-area') && (document.getElementById('breadcrumb-area').innerHTML = renderBreadcrumb([
+            { label: '首页', url: 'index.html' },
+            { label: '歌手列表', url: 'singers.html' }
+        ]));
+
+        // ==================== 渲染广告位 ====================
+        document.getElementById('ad-top-banner').innerHTML = renderAd('banner', 'singers-top');
+        document.getElementById('ad-mid-banner').innerHTML = renderAd('banner', 'singers-mid');
+        document.getElementById('ad-mobile-sticky').innerHTML = renderAd('mobile-sticky', 'singers-mobile');
+
+        // 侧边栏广告
+        const sidebarAds = document.getElementById('sidebar-ads');
+        sidebarAds.innerHTML = renderAd('sidebar', 'singers-sidebar-1') + renderAd('sidebar', 'singers-sidebar-2');
+
+        // ==================== 渲染风格筛选标签 ====================
+        function renderStyleFilters() {
+            const container = document.getElementById('style-filters');
+            container.innerHTML = STYLES.map(style => {
+                const activeClass = style === currentStyle ? ' active' : '';
+                return `<span class="style-chip${activeClass}" data-style="${style}">${style}</span>`;
+            }).join('');
+
+            // 绑定点击事件
+            container.querySelectorAll('.style-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    currentStyle = chip.dataset.style;
+                    // 更新高亮
+                    container.querySelectorAll('.style-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    renderSingerGrid();
+                });
+            });
+        }
+
+        // ==================== 获取筛选后的歌手列表 ====================
+        function getFilteredSingers() {
+            let filtered = [...singers];
+
+            // 风格筛选
+            if (currentStyle !== '全部') {
+                filtered = filtered.filter(s => s.style.includes(currentStyle));
+            }
+
+            // 搜索筛选
+            if (currentKeyword) {
+                const kw = currentKeyword.toLowerCase();
+                filtered = filtered.filter(s =>
+                    s.name.toLowerCase().includes(kw) ||
+                    s.style.toLowerCase().includes(kw) ||
+                    s.hitSongs.some(song => song.toLowerCase().includes(kw))
+                );
+            }
+
+            return filtered;
+        }
+
+        // ==================== 渲染歌手卡片网格 ====================
+        function renderSingerGrid() {
+            const container = document.getElementById('singer-grid');
+            const filtered = getFilteredSingers();
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">🎤</div>
+                        <h3>未找到匹配的歌手</h3>
+                        <p>请尝试更换筛选条件或搜索关键词</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(singer => {
+                const tour = tours.find(t => t.singerId === singer.id);
+                const tourShows = tour ? getShowsByTourId(tour.id) : [];
+                const pastShows = tourShows.filter(s => s.isPast);
+                const upcomingShows = tourShows.filter(s => !s.isPast);
+
+                return `
+                    <a href="singer.html?id=${singer.id}" class="singer-card">
+                        <div class="singer-card-img">
+                            <img src="${singer.avatar}" alt="${singer.name}" loading="lazy"
+                                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🎵</text></svg>'">
+                            <span class="tag tag-style">${singer.style}</span>
+                        </div>
+                        <div class="singer-card-info">
+                            <h3>${singer.name}</h3>
+                            <p class="singer-tour-name">${tour ? tour.name : ''}</p>
+                            <div class="singer-meta">
+                                <span class="singer-count">${tourShows.length} 场次</span>
+                                ${pastShows.length > 0 ? `<span class="tag tag-new" style="font-size:11px;">${pastShows.length}场已举办</span>` : ''}
+                            </div>
+                            <div class="singer-hit-songs">
+                                ${singer.hitSongs.map(song => `<span>${song}</span>`).join('')}
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        // ==================== 搜索功能 ====================
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        let searchTimer = null;
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                currentKeyword = searchInput.value.trim();
+                renderSingerGrid();
+            }, 300);
+        });
+
+        searchBtn.addEventListener('click', () => {
+            currentKeyword = searchInput.value.trim();
+            renderSingerGrid();
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                currentKeyword = searchInput.value.trim();
+                renderSingerGrid();
+            }
+        });
+
+        // ==================== 初始渲染 ====================
+        renderStyleFilters();
+        renderSingerGrid();
+    </script>
+</body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果 - 2026年热门歌手演唱会曲目参考</title>
+    <meta name="description" content="搜索2026年热门歌手演唱会信息，包括歌手、巡演、场次等全方位搜索结果。">
+    <meta name="keywords" content="演唱会搜索,歌手搜索,巡演搜索,演唱会场次,演唱会曲目">
+    <meta name="robots" content="noindex, follow">
+    <meta property="og:title" content="搜索结果 - 2026年热门歌手演唱会曲目参考">
+    <meta property="og:description" content="搜索2026年热门歌手演唱会信息，快速找到您想要的歌手、巡演和场次。">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ===== 搜索结果页面专属样式 ===== */
+
+        .page-header {
+            background: linear-gradient(135deg, #1a1a5e 0%, #2d1b69 50%, #4a1a8a 100%);
+            color: #ffffff;
+            padding: 32px 0 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(100, 80, 200, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(60, 40, 160, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header .breadcrumb {
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .active {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 搜索框区域 */
+        .search-section {
+            background-color: var(--color-white);
+            padding: 20px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-section .search-box {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .search-section .search-box input {
+            height: 48px;
+            font-size: 16px;
+        }
+
+        .search-section .search-box .search-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        /* 筛选标签 */
+        .filter-tabs {
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-light-gray);
+            padding: 0;
+            position: sticky;
+            top: var(--nav-height);
+            z-index: 100;
+        }
+
+        .filter-tabs .container {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .filter-tab:hover {
+            color: var(--color-primary);
+            background-color: var(--color-primary-bg);
+        }
+
+        .filter-tab.active {
+            color: var(--color-primary);
+            font-weight: 700;
+            border-bottom-color: var(--color-primary);
+        }
+
+        .filter-tab .tab-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            background-color: var(--color-light-gray);
+            border-radius: var(--radius-full);
+        }
+
+        .filter-tab.active .tab-count {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        /* 搜索结果区 */
+        .search-results {
+            padding: 24px 0 48px;
+        }
+
+        .result-group {
+            margin-bottom: 32px;
+        }
+
+        .result-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-light-gray);
+        }
+
+        .result-group-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-group-header .group-icon {
+            font-size: 20px;
+        }
+
+        .result-group-header .group-count {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            font-weight: 400;
+        }
+
+        /* 歌手结果卡片 */
+        .result-singer-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 10px;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .result-singer-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .result-singer-avatar {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            background-color: var(--color-light-gray);
+        }
+
+        .result-singer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .result-singer-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .result-singer-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+
+        .result-singer-meta {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-singer-meta .meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 巡演结果卡片 */
+        .result-tour-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 10px;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .result-tour-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .result-tour-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1E40AF, #3B5FCC);
+            border-radius: var(--radius-md);
+            font-size: 22px;
+        }
+
+        .result-tour-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .result-tour-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .result-tour-meta {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        /* 场次结果卡片 */
+        .result-show-card {
+            display: flex;
+            align-items: stretch;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .result-show-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .result-show-date {
+            flex-shrink: 0;
+            width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #1E40AF 0%, #1D3A9A 100%);
+            color: #ffffff;
+            padding: 10px 6px;
+            text-align: center;
+        }
+
+        .result-show-date .date-day {
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .result-show-date .date-month {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .result-show-info {
+            flex: 1;
+            padding: 12px 14px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .result-show-info h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .result-show-info .show-detail {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0;
+        }
+
+        .result-show-info .show-song-count {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+        }
+
+        /* 查看更多按钮 */
+        .btn-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-primary);
+            background-color: var(--color-primary-bg);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-top: 8px;
+        }
+
+        .btn-more:hover {
+            border-color: var(--color-primary);
+            background-color: rgba(30, 64, 175, 0.12);
+            color: var(--color-primary);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 16px;
+        }
+
+        /* 搜索关键词高亮 */
+        mark {
+            background-color: #FEF3C7;
+            color: #92400E;
+            padding: 1px 2px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        /* 广告间距 */
+        .ad-slot-wrapper {
+            padding: 8px 0;
+        }
+
+        /* ===== 手机端适配 ===== */
+        @media screen and (max-width: 767px) {
+            .page-header {
+                padding: 20px 0 16px;
+            }
+
+            .page-header h1 {
+                font-size: 20px;
+            }
+
+            .search-section .search-box input {
+                height: 44px;
+                font-size: 14px;
+            }
+
+            .search-section .search-box .search-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .filter-tabs {
+                position: static;
+            }
+
+            .filter-tab {
+                padding: 12px 14px;
+                font-size: 13px;
+            }
+
+            .result-singer-card {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .result-singer-avatar {
+                width: 44px;
+                height: 44px;
+            }
+
+            .result-singer-info h3 {
+                font-size: 14px;
+            }
+
+            .result-tour-card {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .result-tour-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .result-tour-info h3 {
+                font-size: 14px;
+            }
+
+            .result-show-card {
+                flex-direction: column;
+            }
+
+            .result-show-date {
+                width: 100%;
+                flex-direction: row;
+                gap: 8px;
+                padding: 8px 14px;
+            }
+
+            .result-show-date .date-day {
+                font-size: 20px;
+            }
+
+            .result-show-info {
+                padding: 10px 14px;
+            }
+
+            .result-show-info h3 {
+                font-size: 13px;
+            }
+
+            .search-results {
+                padding: 16px 0 32px;
+            }
+
+            .result-group {
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <nav id="mobile-nav"></nav>
+
+    <main>
+        <!-- 页面头部 -->
+        <section class="page-header">
+            <div class="container">
+                <div id="breadcrumb"></div>
+                <h1>🔍 搜索结果</h1>
+            </div>
+        </section>
+
+        <!-- 搜索框 -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="搜索歌手、巡演名称、城市...">
+                    <button class="search-btn" id="search-btn">🔍</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 顶部广告 -->
+        <div class="container" id="ad-top-banner"></div>
+
+        <!-- 筛选标签 -->
+        <div class="filter-tabs" id="filter-tabs">
+            <div class="container">
+                <button class="filter-tab active" data-filter="all">全部 <span class="tab-count" id="count-all">0</span></button>
+                <button class="filter-tab" data-filter="singers">歌手 <span class="tab-count" id="count-singers">0</span></button>
+                <button class="filter-tab" data-filter="tours">巡演 <span class="tab-count" id="count-tours">0</span></button>
+                <button class="filter-tab" data-filter="shows">场次 <span class="tab-count" id="count-shows">0</span></button>
+            </div>
+        </div>
+
+        <!-- 搜索结果 -->
+        <section class="search-results">
+            <div class="container" id="search-results">
+                <!-- JS动态渲染 -->
+            </div>
+        </section>
+
+        <!-- 底部广告 -->
+        <div class="container" id="ad-bottom-banner"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // ======================== 初始化 ========================
+        initApp();
+
+        // ======================== 渲染面包屑 ========================
+        document.getElementById('breadcrumb').innerHTML = renderBreadcrumb([
+            { label: '首页', url: 'index.html' },
+            { label: '搜索结果' }
+        ]);
+
+        // ======================== 渲染广告位 ========================
+        document.getElementById('ad-top-banner').innerHTML = renderAd('banner', 'search-top');
+        document.getElementById('ad-bottom-banner').innerHTML = renderAd('banner', 'search-bottom');
+
+        // ======================== 获取搜索关键词 ========================
+        const urlParams = new URLSearchParams(window.location.search);
+        const keyword = urlParams.get('q') || '';
+        const searchInput = document.getElementById('search-input');
+        searchInput.value = keyword;
+
+        // ======================== 状态 ========================
+        let currentFilter = 'all';
+        let searchResults = { singers: [], tours: [], shows: [] };
+        const MAX_VISIBLE = 10;
+
+        // ======================== 高亮关键词 ========================
+        function highlightKeyword(text, kw) {
+            if (!kw || !text) return text;
+            const regex = new RegExp(`(${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+
+        // ======================== 执行搜索 ========================
+        function performSearch() {
+            const kw = keyword.trim();
+            if (!kw) {
+                searchResults = { singers: [], tours: [], shows: [] };
+            } else {
+                const baseResults = search(kw);
+
+                // 搜索歌手
+                searchResults.singers = baseResults.singers;
+
+                // 搜索巡演
+                searchResults.tours = baseResults.tours;
+
+                // 搜索场次：按歌手名、巡演名、城市、场馆匹配
+                const kwLower = kw.toLowerCase();
+                searchResults.shows = shows.filter(show => {
+                    const tour = getTourById(show.tourId);
+                    if (!tour) return false;
+                    const singer = getSingerById(tour.singerId);
+                    const singerName = singer ? singer.name.toLowerCase() : '';
+                    const tourName = tour.name.toLowerCase();
+                    const city = show.city.toLowerCase();
+                    const venue = show.venue.toLowerCase();
+                    return singerName.includes(kwLower) ||
+                           tourName.includes(kwLower) ||
+                           city.includes(kwLower) ||
+                           venue.includes(kwLower);
+                }).sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+
+            // 更新标签计数
+            document.getElementById('count-all').textContent = searchResults.singers.length + searchResults.tours.length + searchResults.shows.length;
+            document.getElementById('count-singers').textContent = searchResults.singers.length;
+            document.getElementById('count-tours').textContent = searchResults.tours.length;
+            document.getElementById('count-shows').textContent = searchResults.shows.length;
+
+            renderResults();
+        }
+
+        // ======================== 渲染搜索结果 ========================
+        function renderResults() {
+            const container = document.getElementById('search-results');
+            const kw = keyword.trim();
+
+            // 无关键词提示
+            if (!kw) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h3>请输入搜索关键词</h3>
+                        <p>您可以搜索歌手名称、巡演名称或城市</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // 无结果提示
+            const totalResults = searchResults.singers.length + searchResults.tours.length + searchResults.shows.length;
+            if (totalResults === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">😕</div>
+                        <h3>未找到与"${highlightKeyword(kw, kw)}"相关的结果</h3>
+                        <p>请尝试使用其他关键词，如歌手名、巡演名或城市名</p>
+                        <a href="index.html" class="btn btn-primary" style="margin-top: 16px;">返回首页</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            let hasRenderedInlineAd = false;
+
+            // ---- 歌手结果 ----
+            if ((currentFilter === 'all' || currentFilter === 'singers') && searchResults.singers.length > 0) {
+                const visibleSingers = searchResults.singers.slice(0, MAX_VISIBLE);
+                const hasMore = searchResults.singers.length > MAX_VISIBLE;
+
+                html += `
+                    <div class="result-group" data-group="singers">
+                        <div class="result-group-header">
+                            <h2><span class="group-icon">🎤</span> 匹配的歌手 <span class="group-count">(${searchResults.singers.length})</span></h2>
+                        </div>
+                        <div class="result-list" id="result-singers">
+                `;
+
+                visibleSingers.forEach(singer => {
+                    const singerTours = getToursBySingerId(singer.id);
+                    html += `
+                        <a href="singer.html?id=${singer.id}" class="result-singer-card">
+                            <div class="result-singer-avatar">
+                                <img src="${singer.avatar}" alt="${singer.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🎵</text></svg>'">
+                            </div>
+                            <div class="result-singer-info">
+                                <h3>${highlightKeyword(singer.name, kw)}</h3>
+                                <div class="result-singer-meta">
+                                    <span class="meta-item">${highlightKeyword(singer.style, kw)}</span>
+                                    <span class="meta-item">${singerTours.length} 场巡演</span>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                if (hasMore) {
+                    html += `
+                        <button class="btn-more" data-group="singers" data-offset="${MAX_VISIBLE}">查看更多 (${searchResults.singers.length - MAX_VISIBLE}条)</button>
+                    `;
+                }
+
+                html += `</div></div>`;
+            }
+
+            // ---- 巡演结果 ----
+            if ((currentFilter === 'all' || currentFilter === 'tours') && searchResults.tours.length > 0) {
+                const visibleTours = searchResults.tours.slice(0, MAX_VISIBLE);
+                const hasMore = searchResults.tours.length > MAX_VISIBLE;
+
+                html += `
+                    <div class="result-group" data-group="tours">
+                        <div class="result-group-header">
+                            <h2><span class="group-icon">🎪</span> 匹配的巡演 <span class="group-count">(${searchResults.tours.length})</span></h2>
+                        </div>
+                        <div class="result-list" id="result-tours">
+                `;
+
+                visibleTours.forEach(tour => {
+                    const singer = getSingerById(tour.singerId);
+                    html += `
+                        <a href="tour.html?id=${tour.id}" class="result-tour-card">
+                            <div class="result-tour-icon">🎤</div>
+                            <div class="result-tour-info">
+                                <h3>${highlightKeyword(tour.name, kw)}</h3>
+                                <div class="result-tour-meta">
+                                    ${singer ? highlightKeyword(singer.name, kw) : ''} · ${tour.startDate} ~ ${tour.endDate}
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                if (hasMore) {
+                    html += `
+                        <button class="btn-more" data-group="tours" data-offset="${MAX_VISIBLE}">查看更多 (${searchResults.tours.length - MAX_VISIBLE}条)</button>
+                    `;
+                }
+
+                html += `</div></div>`;
+            }
+
+            // ---- 场次结果 ----
+            if ((currentFilter === 'all' || currentFilter === 'shows') && searchResults.shows.length > 0) {
+                const visibleShows = searchResults.shows.slice(0, MAX_VISIBLE);
+                const hasMore = searchResults.shows.length > MAX_VISIBLE;
+
+                // 在场次结果前插入内嵌广告（如果前面没有插入过）
+                if (!hasRenderedInlineAd) {
+                    html += `<div class="ad-slot-wrapper">${renderAd('inline', 'search-mid')}</div>`;
+                    hasRenderedInlineAd = true;
+                }
+
+                html += `
+                    <div class="result-group" data-group="shows">
+                        <div class="result-group-header">
+                            <h2><span class="group-icon">🎫</span> 匹配的场次 <span class="group-count">(${searchResults.shows.length})</span></h2>
+                        </div>
+                        <div class="result-list" id="result-shows">
+                `;
+
+                visibleShows.forEach(show => {
+                    const tour = getTourById(show.tourId);
+                    const singer = getSingerById(tour.singerId);
+                    const songCount = getSetlistByShowId(show.id).length;
+
+                    html += `
+                        <a href="setlist.html?id=${show.id}" class="result-show-card">
+                            <div class="result-show-date">
+                                <span class="date-day">${show.date.split('-')[2]}</span>
+                                <span class="date-month">${show.date.split('-')[1]}月</span>
+                            </div>
+                            <div class="result-show-info">
+                                <h3>${highlightKeyword(singer.name, kw)} - ${highlightKeyword(tour.name, kw)}</h3>
+                                <p class="show-detail">📍 ${highlightKeyword(show.city, kw)} · ${show.date}</p>
+                                <p class="show-song-count">${songCount > 0 ? songCount + ' 首曲目' : '暂无曲目数据'}</p>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                if (hasMore) {
+                    html += `
+                        <button class="btn-more" data-group="shows" data-offset="${MAX_VISIBLE}">查看更多 (${searchResults.shows.length - MAX_VISIBLE}条)</button>
+                    `;
+                }
+
+                html += `</div></div>`;
+            }
+
+            container.innerHTML = html;
+
+            // 绑定"查看更多"按钮事件
+            container.querySelectorAll('.btn-more').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const group = btn.dataset.group;
+                    const offset = parseInt(btn.dataset.offset, 10);
+                    loadMoreResults(group, offset, btn);
+                });
+            });
+        }
+
+        // ======================== 加载更多结果 ========================
+        function loadMoreResults(group, offset, btn) {
+            const kw = keyword.trim();
+            const nextBatch = searchResults[group].slice(offset, offset + MAX_VISIBLE);
+            const listContainer = btn.previousElementSibling || btn.parentElement.querySelector('.result-list');
+
+            if (!listContainer) return;
+
+            let extraHtml = '';
+
+            if (group === 'singers') {
+                nextBatch.forEach(singer => {
+                    const singerTours = getToursBySingerId(singer.id);
+                    extraHtml += `
+                        <a href="singer.html?id=${singer.id}" class="result-singer-card">
+                            <div class="result-singer-avatar">
+                                <img src="${singer.avatar}" alt="${singer.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🎵</text></svg>'">
+                            </div>
+                            <div class="result-singer-info">
+                                <h3>${highlightKeyword(singer.name, kw)}</h3>
+                                <div class="result-singer-meta">
+                                    <span class="meta-item">${highlightKeyword(singer.style, kw)}</span>
+                                    <span class="meta-item">${singerTours.length} 场巡演</span>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+            } else if (group === 'tours') {
+                nextBatch.forEach(tour => {
+                    const singer = getSingerById(tour.singerId);
+                    extraHtml += `
+                        <a href="tour.html?id=${tour.id}" class="result-tour-card">
+                            <div class="result-tour-icon">🎤</div>
+                            <div class="result-tour-info">
+                                <h3>${highlightKeyword(tour.name, kw)}</h3>
+                                <div class="result-tour-meta">
+                                    ${singer ? highlightKeyword(singer.name, kw) : ''} · ${tour.startDate} ~ ${tour.endDate}
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+            } else if (group === 'shows') {
+                nextBatch.forEach(show => {
+                    const tour = getTourById(show.tourId);
+                    const singer = getSingerById(tour.singerId);
+                    const songCount = getSetlistByShowId(show.id).length;
+                    extraHtml += `
+                        <a href="setlist.html?id=${show.id}" class="result-show-card">
+                            <div class="result-show-date">
+                                <span class="date-day">${show.date.split('-')[2]}</span>
+                                <span class="date-month">${show.date.split('-')[1]}月</span>
+                            </div>
+                            <div class="result-show-info">
+                                <h3>${highlightKeyword(singer.name, kw)} - ${highlightKeyword(tour.name, kw)}</h3>
+                                <p class="show-detail">📍 ${highlightKeyword(show.city, kw)} · ${show.date}</p>
+                                <p class="show-song-count">${songCount > 0 ? songCount + ' 首曲目' : '暂无曲目数据'}</p>
+                            </div>
+                        </a>
+                    `;
+                });
+            }
+
+            // 插入到按钮前面
+            btn.insertAdjacentHTML('beforebegin', extraHtml);
+
+            // 更新offset
+            const newOffset = offset + MAX_VISIBLE;
+            const remaining = searchResults[group].length - newOffset;
+
+            if (remaining <= 0) {
+                btn.remove();
+            } else {
+                btn.dataset.offset = newOffset;
+                btn.textContent = `查看更多 (${remaining}条)`;
+            }
+        }
+
+        // ======================== 筛选标签切换 ========================
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                renderResults();
+            });
+        });
+
+        // ======================== 搜索事件 ========================
+        document.getElementById('search-btn').addEventListener('click', () => {
+            const kw = searchInput.value.trim();
+            if (kw) {
+                window.location.href = `search.html?q=${encodeURIComponent(kw)}`;
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const kw = searchInput.value.trim();
+                if (kw) {
+                    window.location.href = `search.html?q=${encodeURIComponent(kw)}`;
+                }
+            }
+        });
+
+        // ======================== 初始搜索 ========================
+        performSearch();
+    </script>
+</body>
+</html>

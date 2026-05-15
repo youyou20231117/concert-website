@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巡演曲目单 - 2026年热门歌手演唱会曲目参考</title>
+    <meta name="description" content="2026年热门歌手演唱会巡演曲目单大全，按日期查看已举办场次的完整曲目信息，支持多维度筛选与搜索。">
+    <meta name="keywords" content="巡演曲目单,演唱会曲目,2026演唱会,周华健曲目单,陈奕迅曲目单,林俊杰曲目单">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="巡演曲目单 - 2026年热门歌手演唱会曲目参考">
+    <meta property="og:description" content="查看2026年热门歌手演唱会已举办场次的完整曲目单，支持按歌手类型、月份、曲目类型等维度筛选。">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ===== 巡演曲目列表页面专属样式 ===== */
+
+        .page-header {
+            background: linear-gradient(135deg, #1a1a5e 0%, #2d1b69 50%, #4a1a8a 100%);
+            color: #ffffff;
+            padding: 32px 0 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(100, 80, 200, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(60, 40, 160, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header .breadcrumb {
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .active {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 搜索区域 */
+        .search-section {
+            background-color: var(--color-white);
+            padding: 16px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-section .search-box {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .search-section .search-box input {
+            height: 48px;
+            font-size: 16px;
+        }
+
+        .search-section .search-box .search-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        /* 筛选栏 */
+        .filter-bar {
+            background-color: var(--color-white);
+            padding: 14px 0;
+            box-shadow: var(--shadow-sm);
+            border-top: 1px solid var(--color-light-gray);
+        }
+
+        .filter-bar .container {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            background-color: var(--color-light-gray);
+            border: 1px solid transparent;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .filter-chip.active {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        .filter-bar .btn-reset {
+            padding: 5px 14px;
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            background-color: transparent;
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            margin-left: auto;
+        }
+
+        .filter-bar .btn-reset:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            background-color: var(--color-primary-bg);
+        }
+
+        .filter-result-count {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        /* 场次列表区 */
+        .setlists-section {
+            padding: 24px 0 48px;
+        }
+
+        .setlist-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .setlist-card {
+            display: flex;
+            align-items: stretch;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .setlist-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .setlist-card-date {
+            flex-shrink: 0;
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #1E40AF 0%, #1D3A9A 100%);
+            color: #ffffff;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .setlist-card-date .date-day {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .setlist-card-date .date-month {
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .setlist-card-info {
+            flex: 1;
+            padding: 14px 16px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .setlist-card-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .setlist-card-info h3 .singer-highlight {
+            color: var(--color-primary);
+        }
+
+        .setlist-card-city {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0;
+        }
+
+        .setlist-card-preview {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .setlist-card-tags {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+
+        .tag-source {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            font-weight: 500;
+        }
+
+        .tag-source-official {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .tag-source-audience {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .tag-source-media {
+            background-color: #F3E8FF;
+            color: #7C3AED;
+        }
+
+        .tag-update {
+            background-color: #D1FAE5;
+            color: #065F46;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        .setlist-card-right {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            gap: 6px;
+        }
+
+        .setlist-card-right .song-count {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            text-align: center;
+        }
+
+        .setlist-card-right .song-count strong {
+            display: block;
+            font-size: 20px;
+            color: var(--color-primary);
+            font-weight: 800;
+        }
+
+        /* 加载更多 */
+        .load-more-wrapper {
+            text-align: center;
+            padding: 24px 0;
+        }
+
+        .btn-load-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary);
+            background-color: var(--color-white);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-load-more:hover {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-load-more:disabled {
+            border-color: var(--color-medium-gray);
+            color: var(--color-text-muted);
+            cursor: not-allowed;
+            background-color: var(--color-light-gray);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+        }
+
+        /* 广告间距 */
+        .ad-slot-wrapper {
+            padding: 8px 0;
+        }
+
+        /* ===== 手机端适配 ===== */
+        @media screen and (max-width: 767px) {
+            .page-header {
+                padding: 20px 0 16px;
+            }
+
+            .page-header h1 {
+                font-size: 20px;
+            }
+
+            .search-section .search-box input {
+                height: 44px;
+                font-size: 14px;
+            }
+
+            .search-section .search-box .search-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .filter-bar {
+                padding: 10px 0;
+            }
+
+            .filter-bar .container {
+                gap: 10px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-group label {
+                width: 100%;
+                margin-bottom: 2px;
+            }
+
+            .filter-chip {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+
+            .filter-bar .btn-reset {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .filter-result-count {
+                width: 100%;
+                text-align: center;
+            }
+
+            .setlist-card {
+                flex-direction: column;
+            }
+
+            .setlist-card-date {
+                width: 100%;
+                flex-direction: row;
+                gap: 8px;
+                padding: 8px 14px;
+            }
+
+            .setlist-card-date .date-day {
+                font-size: 22px;
+            }
+
+            .setlist-card-info {
+                padding: 10px 14px;
+            }
+
+            .setlist-card-info h3 {
+                font-size: 14px;
+            }
+
+            .setlist-card-right {
+                flex-direction: row;
+                padding: 8px 14px;
+                justify-content: flex-end;
+            }
+
+            .setlist-card-right .song-count {
+                text-align: right;
+            }
+
+            .setlist-card-right .song-count strong {
+                display: inline;
+                font-size: 14px;
+            }
+
+            .setlists-section {
+                padding: 16px 0 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <nav id="mobile-nav"></nav>
+
+    <main>
+        <!-- 页面头部 -->
+        <section class="page-header">
+            <div class="container">
+                <div id="breadcrumb"></div>
+                <h1>&#128203; 巡演曲目单</h1>
+            </div>
+        </section>
+
+        <!-- 搜索区域 -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="搜索歌手、巡演名称、城市...">
+                    <button class="search-btn" id="search-btn">&#128269;</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 顶部广告 -->
+        <div class="container" id="ad-top-banner"></div>
+
+        <!-- 筛选栏 -->
+        <div class="filter-bar">
+            <div class="container">
+                <div class="filter-group" id="filter-style">
+                    <label>歌手类型：</label>
+                    <!-- JS动态渲染 -->
+                </div>
+                <div class="filter-group" id="filter-month">
+                    <label>演出月份：</label>
+                    <!-- JS动态渲染 -->
+                </div>
+                <div class="filter-group" id="filter-song-type">
+                    <label>曲目类型：</label>
+                    <!-- JS动态渲染 -->
+                </div>
+                <div class="filter-group" id="filter-source">
+                    <label>信息来源：</label>
+                    <!-- JS动态渲染 -->
+                </div>
+                <button class="btn-reset" id="btn-reset">重置筛选</button>
+                <span class="filter-result-count" id="result-count"></span>
+            </div>
+        </div>
+
+        <!-- 场次列表 -->
+        <section class="setlists-section">
+            <div class="container">
+                <div class="setlist-list" id="setlist-list">
+                    <!-- JS动态渲染 -->
+                </div>
+                <div class="load-more-wrapper" id="load-more-wrapper">
+                    <button class="btn-load-more" id="btn-load-more">加载更多</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部广告 -->
+        <div class="container" id="ad-bottom-banner"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <!-- 手机端底部粘性广告 -->
+    <div id="ad-mobile-sticky"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // ======================== 初始化 ========================
+        initApp();
+
+        // ======================== 渲染面包屑 ========================
+        document.getElementById('breadcrumb').innerHTML = renderBreadcrumb([
+            { label: '首页', url: 'index.html' },
+            { label: '巡演曲目' }
+        ]);
+
+        // ======================== 渲染广告位 ========================
+        document.getElementById('ad-top-banner').innerHTML = renderAd('banner', 'setlists-top');
+        document.getElementById('ad-bottom-banner').innerHTML = renderAd('banner', 'setlists-bottom');
+        document.getElementById('ad-mobile-sticky').innerHTML = renderAd('mobile-sticky', 'setlists-mobile');
+
+        // ======================== 筛选配置 ========================
+        const STYLE_OPTIONS = ['全部', '流行', '摇滚', '民谣', '港乐', '说唱', '电子'];
+        const SONG_TYPE_OPTIONS = [
+            { label: '全部', value: 'all' },
+            { label: '含安可曲', value: 'encore' },
+            { label: '含翻唱', value: 'cover' }
+        ];
+        const SOURCE_OPTIONS = [
+            { label: '全部', value: '' },
+            { label: '官方发布', value: '官方发布' },
+            { label: '观众上传', value: '观众上传' },
+            { label: '权威媒体报道', value: '权威媒体报道' }
+        ];
+
+        // 当前筛选状态
+        let currentStyle = '全部';
+        let currentMonth = '';
+        let currentSongType = 'all';
+        let currentSource = '';
+        let currentKeyword = '';
+        let displayCount = 12;
+        const PAGE_SIZE = 12;
+
+        // ======================== 渲染筛选标签 ========================
+        function renderFilterChips() {
+            // 歌手类型
+            const styleContainer = document.getElementById('filter-style');
+            styleContainer.innerHTML = '<label>歌手类型：</label>' + STYLE_OPTIONS.map(s => {
+                const activeClass = s === currentStyle ? ' active' : '';
+                return `<span class="filter-chip${activeClass}" data-filter="style" data-value="${s}">${s}</span>`;
+            }).join('');
+
+            // 演出月份
+            const monthContainer = document.getElementById('filter-month');
+            let monthHtml = '<label>演出月份：</label>';
+            monthHtml += `<span class="filter-chip${currentMonth === '' ? ' active' : ''}" data-filter="month" data-value="">全部</span>`;
+            for (let m = 1; m <= 12; m++) {
+                const activeClass = currentMonth === String(m) ? ' active' : '';
+                monthHtml += `<span class="filter-chip${activeClass}" data-filter="month" data-value="${m}">${m}月</span>`;
+            }
+            monthContainer.innerHTML = monthHtml;
+
+            // 曲目类型
+            const songTypeContainer = document.getElementById('filter-song-type');
+            songTypeContainer.innerHTML = '<label>曲目类型：</label>' + SONG_TYPE_OPTIONS.map(opt => {
+                const activeClass = opt.value === currentSongType ? ' active' : '';
+                return `<span class="filter-chip${activeClass}" data-filter="songType" data-value="${opt.value}">${opt.label}</span>`;
+            }).join('');
+
+            // 信息来源
+            const sourceContainer = document.getElementById('filter-source');
+            sourceContainer.innerHTML = '<label>信息来源：</label>' + SOURCE_OPTIONS.map(opt => {
+                const activeClass = opt.value === currentSource ? ' active' : '';
+                return `<span class="filter-chip${activeClass}" data-filter="source" data-value="${opt.value}">${opt.label}</span>`;
+            }).join('');
+
+            // 绑定筛选事件
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const filterType = chip.dataset.filter;
+                    const value = chip.dataset.value;
+
+                    switch (filterType) {
+                        case 'style':
+                            currentStyle = value;
+                            break;
+                        case 'month':
+                            currentMonth = value;
+                            break;
+                        case 'songType':
+                            currentSongType = value;
+                            break;
+                        case 'source':
+                            currentSource = value;
+                            break;
+                    }
+
+                    // 更新高亮
+                    chip.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+
+                    // 重置显示数量并重新渲染
+                    displayCount = PAGE_SIZE;
+                    renderSetlistList();
+                });
+            });
+        }
+
+        // ======================== 获取筛选后的场次列表 ========================
+        function getFilteredShows() {
+            // 只取已举办的场次
+            let filtered = shows.filter(s => s.isPast);
+
+            // 关键词搜索
+            if (currentKeyword) {
+                const kw = currentKeyword.toLowerCase();
+                filtered = filtered.filter(show => {
+                    const tour = getTourById(show.tourId);
+                    if (!tour) return false;
+                    const singer = getSingerById(tour.singerId);
+                    const singerName = singer ? singer.name.toLowerCase() : '';
+                    const tourName = tour.name.toLowerCase();
+                    const city = show.city.toLowerCase();
+                    const venue = show.venue.toLowerCase();
+                    return singerName.includes(kw) ||
+                           tourName.includes(kw) ||
+                           city.includes(kw) ||
+                           venue.includes(kw);
+                });
+            }
+
+            // 歌手类型筛选
+            if (currentStyle !== '全部') {
+                filtered = filtered.filter(show => {
+                    const tour = getTourById(show.tourId);
+                    if (!tour) return false;
+                    const singer = getSingerById(tour.singerId);
+                    if (!singer) return false;
+                    return singer.style.includes(currentStyle);
+                });
+            }
+
+            // 演出月份筛选
+            if (currentMonth !== '') {
+                filtered = filtered.filter(show => {
+                    const month = parseInt(show.date.split('-')[1], 10);
+                    return month === parseInt(currentMonth, 10);
+                });
+            }
+
+            // 曲目类型筛选
+            if (currentSongType === 'encore') {
+                filtered = filtered.filter(show => {
+                    const songs = getSetlistByShowId(show.id);
+                    return songs.some(s => s.isEncore);
+                });
+            } else if (currentSongType === 'cover') {
+                filtered = filtered.filter(show => {
+                    const songs = getSetlistByShowId(show.id);
+                    return songs.some(s => s.isCover);
+                });
+            }
+
+            // 信息来源筛选
+            if (currentSource !== '') {
+                filtered = filtered.filter(show => {
+                    const songs = getSetlistByShowId(show.id);
+                    return songs.some(s => s.source === currentSource);
+                });
+            }
+
+            // 按日期降序排列
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            return filtered;
+        }
+
+        // ======================== 判断是否为最近7天更新 ========================
+        function isRecentUpdate(show) {
+            // 模拟逻辑：如果场次日期在最近30天内，视为"最新更新"
+            const showDate = new Date(show.date);
+            const now = new Date('2026-05-12'); // 模拟当前日期
+            const diffDays = (now - showDate) / (1000 * 60 * 60 * 24);
+            return diffDays <= 30 && diffDays >= 0;
+        }
+
+        // ======================== 获取信息来源标签样式 ========================
+        function getSourceTagClass(source) {
+            switch (source) {
+                case '官方发布':
+                    return 'tag-source-official';
+                case '观众上传':
+                    return 'tag-source-audience';
+                case '权威媒体报道':
+                    return 'tag-source-media';
+                default:
+                    return 'tag-source-official';
+            }
+        }
+
+        // ======================== 渲染场次列表 ========================
+        function renderSetlistList() {
+            const container = document.getElementById('setlist-list');
+            const loadMoreWrapper = document.getElementById('load-more-wrapper');
+            const resultCountEl = document.getElementById('result-count');
+
+            const allFiltered = getFilteredShows();
+            const visibleShows = allFiltered.slice(0, displayCount);
+
+            // 更新结果计数
+            resultCountEl.textContent = `共 ${allFiltered.length} 场`;
+
+            // 空状态
+            if (allFiltered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">&#128269;</div>
+                        <h3>未找到符合条件的场次</h3>
+                        <p>请尝试调整筛选条件或搜索关键词</p>
+                    </div>
+                `;
+                loadMoreWrapper.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            visibleShows.forEach((show, index) => {
+                const tour = getTourById(show.tourId);
+                if (!tour) return;
+                const singer = getSingerById(tour.singerId);
+                if (!singer) return;
+
+                const songs = getSetlistByShowId(show.id);
+                const songCount = songs.length;
+                const previewSongs = songs.slice(0, 3).map(s => s.songName).join(' / ');
+
+                // 获取信息来源（去重）
+                const sources = [...new Set(songs.map(s => s.source).filter(Boolean))];
+
+                // 每8个场次插入一个内嵌广告
+                if (index > 0 && index % 8 === 0) {
+                    html += `<div class="ad-slot-wrapper">${renderAd('inline', `setlists-inline-${index}`)}</div>`;
+                }
+
+                // 日期信息
+                const dateParts = show.date.split('-');
+                const month = parseInt(dateParts[1], 10);
+                const day = parseInt(dateParts[2], 10);
+
+                // 来源标签HTML
+                const sourceTagsHtml = sources.slice(0, 2).map(s =>
+                    `<span class="tag-source ${getSourceTagClass(s)}">${s}</span>`
+                ).join('');
+
+                // 最新更新标识
+                const updateTag = isRecentUpdate(show)
+                    ? '<span class="tag-update">最新更新</span>'
+                    : '';
+
+                html += `
+                    <a href="setlist.html?id=${show.id}" class="setlist-card">
+                        <div class="setlist-card-date">
+                            <span class="date-day">${day}</span>
+                            <span class="date-month">${month}月</span>
+                        </div>
+                        <div class="setlist-card-info">
+                            <h3><span class="singer-highlight">${singer.name}</span> - ${tour.name}</h3>
+                            <p class="setlist-card-city">&#128205; ${show.city} &middot; ${show.venue}</p>
+                            <p class="setlist-card-preview">${previewSongs}${songCount > 3 ? ' ...' : ''}</p>
+                            <div class="setlist-card-tags">
+                                ${sourceTagsHtml}
+                                ${updateTag}
+                            </div>
+                        </div>
+                        <div class="setlist-card-right">
+                            <div class="song-count">
+                                <strong>${songCount}</strong>
+                                首曲目
+                            </div>
+                        </div>
+                    </a>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // 加载更多按钮
+            if (displayCount >= allFiltered.length) {
+                loadMoreWrapper.style.display = 'none';
+            } else {
+                loadMoreWrapper.style.display = 'block';
+                const btn = document.getElementById('btn-load-more');
+                btn.textContent = `加载更多 (剩余 ${allFiltered.length - displayCount} 场)`;
+                btn.disabled = false;
+            }
+        }
+
+        // ======================== 加载更多 ========================
+        document.getElementById('btn-load-more').addEventListener('click', () => {
+            displayCount += PAGE_SIZE;
+            renderSetlistList();
+        });
+
+        // ======================== 重置筛选 ========================
+        document.getElementById('btn-reset').addEventListener('click', () => {
+            currentStyle = '全部';
+            currentMonth = '';
+            currentSongType = 'all';
+            currentSource = '';
+            currentKeyword = '';
+            displayCount = PAGE_SIZE;
+            document.getElementById('search-input').value = '';
+            renderFilterChips();
+            renderSetlistList();
+        });
+
+        // ======================== 搜索功能 ========================
+        let searchTimer = null;
+        document.getElementById('search-input').addEventListener('input', () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                currentKeyword = document.getElementById('search-input').value.trim();
+                displayCount = PAGE_SIZE;
+                renderSetlistList();
+            }, 300);
+        });
+
+        document.getElementById('search-btn').addEventListener('click', () => {
+            currentKeyword = document.getElementById('search-input').value.trim();
+            displayCount = PAGE_SIZE;
+            renderSetlistList();
+        });
+
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                currentKeyword = e.target.value.trim();
+                displayCount = PAGE_SIZE;
+                renderSetlistList();
+            }
+        });
+
+        // ======================== 初始渲染 ========================
+        renderFilterChips();
+        renderSetlistList();
+    </script>
+</body>
+</html>

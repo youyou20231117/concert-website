@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏 - 2026年热门歌手演唱会曲目参考</title>
+    <meta name="description" content="查看我收藏的演唱会曲目单，管理已收藏的场次信息，快速进入曲目单详情。">
+    <meta name="keywords" content="演唱会收藏,曲目单收藏,我的收藏,演唱会曲目参考">
+    <meta name="robots" content="noindex, follow">
+    <meta property="og:title" content="我的收藏 - 2026年热门歌手演唱会曲目参考">
+    <meta property="og:description" content="管理您收藏的演唱会曲目单，快速查看已收藏的场次信息。">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ===== 我的收藏页面专属样式 ===== */
+
+        .page-header {
+            background: linear-gradient(135deg, #1a1a5e 0%, #2d1b69 50%, #4a1a8a 100%);
+            color: #ffffff;
+            padding: 32px 0 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(100, 80, 200, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(60, 40, 160, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header .breadcrumb {
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .active {
+            color: #ffffff;
+        }
+
+        .page-header .breadcrumb .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 收藏统计 */
+        .fav-stats {
+            background-color: var(--color-white);
+            padding: 16px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .fav-stats .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .fav-stats-text {
+            font-size: 15px;
+            color: var(--color-text-secondary);
+        }
+
+        .fav-stats-text strong {
+            color: var(--color-primary);
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .fav-stats-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-clear-all {
+            padding: 6px 16px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            background-color: transparent;
+            border: 1px solid var(--color-medium-gray);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-clear-all:hover {
+            border-color: #EF4444;
+            color: #EF4444;
+            background-color: #FEF2F2;
+        }
+
+        /* 收藏列表 */
+        .fav-section {
+            padding: 24px 0 48px;
+        }
+
+        .fav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fav-card {
+            display: flex;
+            align-items: stretch;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .fav-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .fav-card-avatar {
+            flex-shrink: 0;
+            width: 80px;
+            overflow: hidden;
+            background-color: var(--color-light-gray);
+        }
+
+        .fav-card-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .fav-card-info {
+            flex: 1;
+            padding: 14px 16px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .fav-card-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fav-card-info h3 .singer-name {
+            color: var(--color-primary);
+            font-weight: 800;
+        }
+
+        .fav-card-tour {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fav-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .fav-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .fav-card-actions {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+        }
+
+        .btn-unfav {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #EF4444;
+            background-color: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .btn-unfav:hover {
+            background-color: #FEE2E2;
+            border-color: #FCA5A5;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+            color: var(--color-text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* 广告间距 */
+        .ad-slot-wrapper {
+            padding: 8px 0;
+        }
+
+        /* ===== 手机端适配 ===== */
+        @media screen and (max-width: 767px) {
+            .page-header {
+                padding: 20px 0 16px;
+            }
+
+            .page-header h1 {
+                font-size: 20px;
+            }
+
+            .fav-stats .container {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .fav-card {
+                flex-direction: column;
+            }
+
+            .fav-card-avatar {
+                width: 100%;
+                height: 80px;
+            }
+
+            .fav-card-info {
+                padding: 12px 14px;
+            }
+
+            .fav-card-info h3 {
+                font-size: 14px;
+            }
+
+            .fav-card-actions {
+                padding: 0 14px 12px;
+                justify-content: flex-end;
+            }
+
+            .fav-section {
+                padding: 16px 0 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <nav id="mobile-nav"></nav>
+
+    <main>
+        <!-- 页面头部 -->
+        <section class="page-header">
+            <div class="container">
+                <div id="breadcrumb"></div>
+                <h1>&#10084;&#65039; 我的收藏</h1>
+            </div>
+        </section>
+
+        <!-- 顶部广告 -->
+        <div class="container" id="ad-top-banner"></div>
+
+        <!-- 收藏统计 -->
+        <div class="fav-stats" id="fav-stats">
+            <div class="container">
+                <div class="fav-stats-text">
+                    已收藏 <strong id="fav-count">0</strong> 场曲目单
+                </div>
+                <div class="fav-stats-actions" id="fav-actions">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 收藏列表 -->
+        <section class="fav-section">
+            <div class="container">
+                <div class="fav-list" id="fav-list">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部广告 -->
+        <div class="container" id="ad-bottom-banner"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <!-- 手机端底部粘性广告 -->
+    <div id="ad-mobile-sticky"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // ======================== 初始化 ========================
+        initApp();
+
+        // ======================== 渲染面包屑 ========================
+        document.getElementById('breadcrumb').innerHTML = renderBreadcrumb([
+            { label: '首页', url: 'index.html' },
+            { label: '我的收藏' }
+        ]);
+
+        // ======================== 渲染广告位 ========================
+        document.getElementById('ad-top-banner').innerHTML = renderAd('banner', 'fav-top');
+        document.getElementById('ad-bottom-banner').innerHTML = renderAd('banner', 'fav-bottom');
+        document.getElementById('ad-mobile-sticky').innerHTML = renderAd('mobile-sticky', 'fav-mobile');
+
+        // ======================== 渲染收藏列表 ========================
+        function renderFavorites() {
+            const favIds = getFavorites();
+            const container = document.getElementById('fav-list');
+            const countEl = document.getElementById('fav-count');
+            const actionsEl = document.getElementById('fav-actions');
+
+            // 更新统计
+            countEl.textContent = favIds.length;
+
+            // 操作按钮
+            if (favIds.length > 0) {
+                actionsEl.innerHTML = `
+                    <button class="btn-clear-all" id="btn-clear-all">清空全部收藏</button>
+                `;
+                document.getElementById('btn-clear-all').addEventListener('click', () => {
+                    if (confirm('确定要清空全部收藏吗？')) {
+                        favIds.forEach(id => toggleFavorite(id));
+                        renderFavorites();
+                    }
+                });
+            } else {
+                actionsEl.innerHTML = '';
+            }
+
+            // 空状态
+            if (favIds.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">&#128533;</div>
+                        <h3>还没有收藏任何曲目单</h3>
+                        <p>浏览演唱会曲目，点击收藏按钮即可添加到收藏列表</p>
+                        <a href="index.html" class="btn btn-primary">返回首页</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // 渲染收藏卡片
+            let html = '';
+            favIds.forEach((showId, index) => {
+                const show = shows.find(s => s.id === showId);
+                if (!show) return;
+
+                const tour = getTourById(show.tourId);
+                if (!tour) return;
+
+                const singer = getSingerById(tour.singerId);
+                if (!singer) return;
+
+                const songs = getSetlistByShowId(showId);
+                const songCount = songs.length;
+
+                // 每6个收藏插入一个内嵌广告
+                if (index > 0 && index % 6 === 0) {
+                    html += `<div class="ad-slot-wrapper">${renderAd('inline', `fav-inline-${index}`)}</div>`;
+                }
+
+                html += `
+                    <a href="setlist.html?id=${showId}" class="fav-card" data-show-id="${showId}">
+                        <div class="fav-card-avatar">
+                            <img src="${singer.avatar}" alt="${singer.name}"
+                                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2240%22>🎵</text></svg>'">
+                        </div>
+                        <div class="fav-card-info">
+                            <h3>
+                                <span class="singer-name">${singer.name}</span>
+                                曲目单
+                            </h3>
+                            <p class="fav-card-tour">${tour.name}</p>
+                            <div class="fav-card-meta">
+                                <span>📍 ${show.city}</span>
+                                <span>📅 ${formatDate(show.date)}</span>
+                                <span>🎵 ${songCount} 首曲目</span>
+                            </div>
+                        </div>
+                        <div class="fav-card-actions">
+                            <button class="btn-unfav" data-unfav-id="${showId}" title="取消收藏">
+                                取消收藏
+                            </button>
+                        </div>
+                    </a>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // 绑定取消收藏按钮事件
+            container.querySelectorAll('.btn-unfav').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const showId = btn.dataset.unfavId;
+                    toggleFavorite(showId);
+                    renderFavorites();
+                });
+            });
+        }
+
+        // ======================== 初始渲染 ========================
+        renderFavorites();
+    </script>
+</body>
+</html>

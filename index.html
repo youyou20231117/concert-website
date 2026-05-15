@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年热门歌手演唱会曲目参考 - 查询演唱会曲目单</title>
+    <meta name="description" content="2026年热门歌手演唱会曲目参考平台，提供周华健、陈奕迅、林俊杰、邓紫棋等热门歌手演唱会完整曲目单查询。">
+    <meta name="keywords" content="2026演唱会曲目,演唱会曲目单,周华健演唱会,陈奕迅演唱会,林俊杰演唱会">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* ===== 首页专属样式 ===== */
+
+        /* Hero 搜索区 */
+        .hero-search {
+            background: linear-gradient(135deg, #1a1a5e 0%, #2d1b69 50%, #4a1a8a 100%);
+            color: #ffffff;
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-search::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(100, 80, 200, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(60, 40, 160, 0.25) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-search .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-search h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hero-search > .container > p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .hero-search .search-box input {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            height: 52px;
+            font-size: 16px;
+        }
+
+        .hero-search .search-box input:focus {
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-search .search-box #search-btn {
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+        }
+
+        /* 热门搜索标签 */
+        .hot-tags {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hot-tags > span {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .hot-tags a {
+            display: inline-block;
+            padding: 4px 14px;
+            color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .hot-tags a:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        /* Section 通用 */
+        .section {
+            padding: 48px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .section-header .view-all {
+            font-size: 14px;
+            color: var(--color-primary);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .section-header .view-all:hover {
+            color: var(--color-primary-hover);
+            text-decoration: underline;
+        }
+
+        .bg-light {
+            background-color: var(--color-light-gray);
+        }
+
+        /* 歌手网格 */
+        .singer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .singer-card {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .singer-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .singer-card-img {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background-color: var(--color-light-gray);
+        }
+
+        .singer-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+
+        .singer-card:hover .singer-card-img img {
+            transform: scale(1.05);
+        }
+
+        .singer-card-img .tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .singer-card-info {
+            padding: 14px;
+        }
+
+        .singer-card-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .singer-tour-name {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .singer-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .singer-meta .tag-style {
+            background-color: #EDE9FE;
+            color: #6D28D9;
+        }
+
+        .singer-count {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        /* 场次列表 */
+        .show-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .show-card {
+            display: flex;
+            align-items: stretch;
+            background-color: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .show-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .show-card-date {
+            flex-shrink: 0;
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #1E40AF 0%, #1D3A9A 100%);
+            color: #ffffff;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .show-card-date .date-day {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .show-card-date .date-month {
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .show-card-info {
+            flex: 1;
+            padding: 14px 16px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .show-card-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .show-location {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 0;
+        }
+
+        .show-preview {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .show-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .show-hint {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        .tag-available {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .tag-soldout {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .tag-upcoming {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        /* 广告容器间距 */
+        #ad-top-banner,
+        #ad-mid-banner,
+        #ad-bottom-banner {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        /* ===== 手机端适配 ===== */
+        @media screen and (max-width: 767px) {
+            .hero-search {
+                padding: 48px 0 40px;
+            }
+
+            .hero-search h1 {
+                font-size: 22px;
+            }
+
+            .hero-search > .container > p {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+
+            .hero-search .search-box input {
+                height: 46px;
+                font-size: 14px;
+            }
+
+            .hero-search .search-box #search-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+
+            .hot-tags {
+                gap: 6px;
+            }
+
+            .hot-tags a {
+                padding: 3px 10px;
+                font-size: 12px;
+            }
+
+            .section {
+                padding: 32px 0;
+            }
+
+            .section-header {
+                margin-bottom: 16px;
+            }
+
+            .section-header h2 {
+                font-size: 18px;
+            }
+
+            .singer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .singer-card-info {
+                padding: 10px;
+            }
+
+            .singer-card-info h3 {
+                font-size: 14px;
+            }
+
+            .singer-tour-name {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .show-card {
+                flex-direction: column;
+            }
+
+            .show-card-date {
+                width: 100%;
+                flex-direction: row;
+                gap: 8px;
+                padding: 8px 14px;
+            }
+
+            .show-card-date .date-day {
+                font-size: 22px;
+            }
+
+            .show-card-info {
+                padding: 10px 14px;
+            }
+
+            .show-card-info h3 {
+                font-size: 14px;
+            }
+        }
+
+        /* ===== 平板适配 ===== */
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .singer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <nav id="mobile-nav"></nav>
+
+    <main>
+        <!-- 顶部搜索区 -->
+        <section class="hero-search">
+            <div class="container">
+                <h1>2026年热门歌手演唱会曲目参考</h1>
+                <p>查询热门歌手演唱会完整曲目单，提前准备合唱</p>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="搜索歌手、巡演名称、城市...">
+                    <button id="search-btn">搜索</button>
+                </div>
+                <!-- 热门搜索标签 -->
+                <div class="hot-tags">
+                    <span>热门搜索：</span>
+                    <a href="#">陈奕迅</a>
+                    <a href="#">林俊杰</a>
+                    <a href="#">邓紫棋</a>
+                    <a href="#">周华健</a>
+                    <a href="#">五月天</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 广告位：首页顶部横幅 -->
+        <div class="container" id="ad-top-banner"></div>
+
+        <!-- 热门歌手推荐区 -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>🔥 热门歌手推荐</h2>
+                    <a href="singers.html" class="view-all">查看全部 →</a>
+                </div>
+                <div class="singer-grid" id="hot-singers">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 广告位：内容区横幅 -->
+        <div class="container" id="ad-mid-banner"></div>
+
+        <!-- 近期场次曲目区 -->
+        <section class="section bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2>📋 近期场次曲目</h2>
+                    <a href="setlists.html" class="view-all">更多曲目 →</a>
+                </div>
+                <div class="show-list" id="recent-shows">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 后续场次预告区 -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>🎫 后续场次预告</h2>
+                    <a href="upcoming.html" class="view-all">全部场次 →</a>
+                </div>
+                <div class="show-list" id="upcoming-shows">
+                    <!-- JS动态渲染 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 广告位：底部横幅 -->
+        <div class="container" id="ad-bottom-banner"></div>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <!-- 手机端底部粘性广告 -->
+    <div id="ad-mobile-sticky"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // 初始化应用
+        initApp();
+
+        // 渲染广告位
+        document.getElementById('ad-top-banner').innerHTML = renderAd('banner', 'home-top');
+        document.getElementById('ad-mid-banner').innerHTML = renderAd('banner', 'home-mid');
+        document.getElementById('ad-bottom-banner').innerHTML = renderAd('banner', 'home-bottom');
+        document.getElementById('ad-mobile-sticky').innerHTML = renderAd('mobile-sticky', 'home-mobile');
+
+        // 渲染热门歌手（取前8位）
+        const hotSingers = singers.slice(0, 8);
+        document.getElementById('hot-singers').innerHTML = hotSingers.map(singer => {
+            const tour = tours.find(t => t.singerId === singer.id);
+            return `
+                <a href="singer.html?id=${singer.id}" class="singer-card">
+                    <div class="singer-card-img">
+                        <img src="${singer.avatar}" alt="${singer.name}" loading="lazy">
+                        <span class="tag tag-hot">热门</span>
+                    </div>
+                    <div class="singer-card-info">
+                        <h3>${singer.name}</h3>
+                        <p class="singer-tour-name">${tour ? tour.name : ''}</p>
+                        <div class="singer-meta">
+                            <span class="tag tag-style">${singer.style}</span>
+                            <span class="singer-count">${singer.tourCount}场</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
+
+        // 渲染近期场次（已举办的，取前6个）
+        const pastShows = shows.filter(s => s.isPast).sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
+        document.getElementById('recent-shows').innerHTML = pastShows.map(show => {
+            const tour = getTourById(show.tourId);
+            const singer = getSingerById(tour.singerId);
+            const songs = getSetlistByShowId(show.id);
+            const previewSongs = songs.slice(0, 5).map(s => s.songName).join('、');
+            return `
+                <a href="setlist.html?id=${show.id}" class="show-card">
+                    <div class="show-card-date">
+                        <span class="date-day">${show.date.split('-')[2]}</span>
+                        <span class="date-month">${show.date.split('-')[1]}月</span>
+                    </div>
+                    <div class="show-card-info">
+                        <h3>${singer.name} - ${tour.name}</h3>
+                        <p class="show-location">📍 ${show.city} · ${show.venue}</p>
+                        <p class="show-preview">${previewSongs}...</p>
+                        <span class="tag tag-new">最新更新</span>
+                    </div>
+                </a>
+            `;
+        }).join('');
+
+        // 渲染后续场次（未举办的，取前6个）
+        const upcomingShows = shows.filter(s => !s.isPast).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 6);
+        document.getElementById('upcoming-shows').innerHTML = upcomingShows.map(show => {
+            const tour = getTourById(show.tourId);
+            const singer = getSingerById(tour.singerId);
+            const statusClass = show.ticketStatus === '可购票' ? 'tag-available' : show.ticketStatus === '已售罄' ? 'tag-soldout' : 'tag-upcoming';
+            return `
+                <a href="setlist.html?id=${show.id}" class="show-card">
+                    <div class="show-card-date">
+                        <span class="date-day">${show.date.split('-')[2]}</span>
+                        <span class="date-month">${show.date.split('-')[1]}月</span>
+                    </div>
+                    <div class="show-card-info">
+                        <h3>${singer.name} - ${tour.name}</h3>
+                        <p class="show-location">📍 ${show.city} · ${show.venue}</p>
+                        <div class="show-actions">
+                            <span class="tag ${statusClass}">${show.ticketStatus}</span>
+                            ${show.ticketStatus === '可购票' ? `<a href="${show.ticketUrl}" class="btn btn-sm btn-primary" onclick="event.stopPropagation()">购票</a>` : ''}
+                        </div>
+                        <p class="show-hint">预计曲目可参考同巡演前序场次</p>
+                    </div>
+                </a>
+            `;
+        }).join('');
+
+        // 搜索功能
+        document.getElementById('search-btn').addEventListener('click', () => {
+            const keyword = document.getElementById('search-input').value.trim();
+            if (keyword) window.location.href = `search.html?q=${encodeURIComponent(keyword)}`;
+        });
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const keyword = e.target.value.trim();
+                if (keyword) window.location.href = `search.html?q=${encodeURIComponent(keyword)}`;
+            }
+        });
+
+        // 热门搜索标签点击
+        document.querySelectorAll('.hot-tags a').forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = `search.html?q=${encodeURIComponent(tag.textContent)}`;
+            });
+        });
+    </script>
+</body>
+</html>
